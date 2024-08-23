@@ -1,0 +1,123 @@
+blueprint:
+  name: Z2M - Aqara H1(WRS-R02) - Wireless remote switch(double rocker)
+  description: Scene & device control using Aqara two button remote
+  domain: automation
+  input:
+    button_sensor:
+      name: Aqara switch
+      description: Aqara switch to use
+      selector:
+        entity:
+          domain: sensor
+          integration: mqtt
+          multiple: false
+    single_left:
+      name: Left button - Single press
+      description: Action to run on a single press of the left button
+      default: []
+      selector:
+        action: {}
+    double_left:
+      name: Left button - Double press
+      description: Action to run on a double press of the left button
+      default: []
+      selector:
+        action: {}
+    triple_left:
+      name: Left button - Triple press
+      description: Action to run on a triple press of the left button
+      default: []
+      selector:
+        action: {}
+    hold_left:
+      name: Left button - Hold
+      description: Action to run when left button is held
+      default: []
+      selector:
+        action: {}
+    single_right:
+      name: Right button - Single press
+      description: Action to run on a single press of the right button
+      default: []
+      selector:
+        action: {}
+    double_right:
+      name: Right button - Double press
+      description: Action to run on a double press of the right button
+      default: []
+      selector:
+        action: {}
+    triple_right:
+      name: Right button - Triple press
+      description: Action to run on a triple press of the right button
+      default: []
+      selector:
+        action: {}
+    hold_right:
+      name: Right button - Hold
+      description: Action to run when right button is held
+      default: []
+      selector:
+        action: {}
+    single_both:
+      name: Both buttons - Single press
+      description: Action to run on a single press of both buttons
+      default: []
+      selector:
+        action: {}
+    double_both:
+      name: Both buttons - Double press
+      description: Action to run on a double press of both buttons
+      default: []
+      selector:
+        action: {}
+    hold_both:
+      name: Both buttons - Hold
+      description: Action to run when both buttons are held
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/z2m-aqara-h1-wrs-r02-wireless-remote-switch-double-rocker-updated-single-double-single-double-hold/455665
+mode: restart
+max_exceeded: silent
+trigger:
+  - platform: state
+    entity_id: !input "button_sensor"
+    attribute: action
+action:
+  - variables:
+      command: "{{ trigger.to_state.state }}"
+  - choose:
+      - conditions:
+          - "{{ command == 'single_left' }}"
+        sequence: !input "single_left"
+      - conditions:
+          - "{{ command == 'double_left' }}"
+        sequence: !input "double_left"
+      - conditions:
+          - "{{ command == 'triple_left' }}"
+        sequence: !input "triple_left"
+      - conditions:
+          - "{{ command == 'hold_left' }}"
+        sequence: !input "hold_left"
+      - conditions:
+          - "{{ command == 'single_right' }}"
+        sequence: !input "single_right"
+      - conditions:
+          - "{{ command == 'double_right' }}"
+        sequence: !input "double_right"
+      - conditions:
+          - "{{ command == 'triple_right' }}"
+        sequence: !input "triple_right"
+      - conditions:
+          - "{{ command == 'hold_right' }}"
+        sequence: !input "hold_right"
+      - conditions:
+          - "{{ command == 'single_both' }}"
+        sequence: !input "single_both"
+      - conditions:
+          - "{{ command == 'double_both' }}"
+        sequence: !input "double_both"
+      - conditions:
+          - "{{ command == 'hold_both' }}"
+        sequence: !input "hold_both"
